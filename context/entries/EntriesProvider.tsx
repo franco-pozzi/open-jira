@@ -15,19 +15,19 @@ export const Entries_INITIAL_STATE: EntriesState = {
     entries: [
         {
             _id: uuidv4(),
-            description: 'A modo de test se muestra informacion',
+            description: 'Pendiente: A modo de test se muestra informacion',
             status: 'pending',
             createdAt: Date.now(),
         },
         {
             _id: uuidv4(),
-            description: 'A modo de test se muestra informacion',
+            description: 'Finalizada: A modo de test se muestra informacion',
             status: 'finished',
             createdAt: Date.now() - 1400000,
         },
         {
             _id: uuidv4(),
-            description: 'A modo de test se muestra informacion',
+            description: 'En progreso: A modo de test se muestra informacion',
             status: 'in-progress',
             createdAt: Date.now() - 100000,
         },
