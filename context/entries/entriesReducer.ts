@@ -1,16 +1,17 @@
+import { Entry } from "../../interfaces";
 import { EntriesState } from "./";
 
 type EntriesActionType =
-    | { type: "[Entries] - Open Sidebar" }
-    | { type: "[Entries] - Close Sidebar" };
+    | { type: "[Entry] Add-Entry", payload: Entry }
+// | { type: "[Entries] - Close Sidebar" };
 
 export const entriesReducer = (state: EntriesState, action: EntriesActionType): EntriesState => {
     switch (action.type) {
-        // case "Entries - Open Sidebar":
-        //   return {
-        //     ...state,
-        //     sidemenuOpen: true,
-        //   };
+        case "[Entry] Add-Entry":
+            return {
+                ...state,
+                entries: [...state.entries, action.payload],
+            };
 
         default:
             return state;
