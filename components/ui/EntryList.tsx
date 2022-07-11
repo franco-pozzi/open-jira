@@ -26,7 +26,7 @@ export const EntryList: FC<Props> = ({ status }) => {
 
         entry.status = status;
         updateEntry(entry);
-        endDragging
+        endDragging();
     }
 
     const allowDrop = (event: DragEvent<HTMLDivElement>) => {
