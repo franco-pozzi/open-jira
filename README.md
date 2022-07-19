@@ -1,4 +1,4 @@
-# Next.js OpenJira APP
+# Next.js FullStack OpenJira APP (Next.js - Mongo.db)
 
 To run locally, you need the database:
 ```
