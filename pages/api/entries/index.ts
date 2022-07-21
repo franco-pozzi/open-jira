@@ -12,6 +12,9 @@ export default function handler(
     case "GET":
       return getEntries(res);
 
+    case "POST":
+      return postEntry(req, res);
+
     default:
       res.status(400).json({ message: "Endpoint no existe" });
       return;
@@ -24,4 +27,27 @@ const getEntries = async (res: NextApiResponse<Data>) => {
   await db.disconnect();
 
   res.status(200).json(entries);
+};
+
+const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { description = "" } = req.body;
+
+  console.log(description);
+
+  const newEntry = new Entry({
+    description,
+    createdAt: Date.now(),
+  });
+
+  try {
+    await db.connect();
+    await newEntry.save();
+    await db.disconnect();
+
+    return res.status(201).json(newEntry);
+  } catch (error) {
+    await db.disconnect();
+
+    return res.status(500).json({ message: "error in new Entry" });
+  }
 };
