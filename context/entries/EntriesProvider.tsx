@@ -6,8 +6,6 @@ import { entriesApi } from '../../apis';
 
 import { Entry } from '../../interfaces';
 
-import { v4 as uuidv4 } from 'uuid';
-
 type EntriesProviderProps = {
     children: React.ReactNode;
 };
@@ -28,26 +26,24 @@ export const EntriesProvider: FC<EntriesProviderProps> = ({ children }) => {
     }, [])
 
     const refreshEntries = async () => {
-        const { data } = await entriesApi.get<Entry[]>('/entries')
-
         try {
-            dispatch({ type: "[Entry] Refresh-Data", payload: data })
-        }
-        catch {
+            const { data } = await entriesApi.get<Entry[]>('/entries')
 
+            dispatch({ type: "[Entry] Refresh-Data", payload: data })
+        } catch (error) {
+            console.log(error)
         }
     }
 
 
-    const addNewEntry = (description: string) => {
-        const newEntry: Entry = {
-            _id: uuidv4(),
-            createdAt: Date.now(),
-            status: 'pending',
-            description
-        }
+    const addNewEntry = async (description: string) => {
+        try {
+            const { data } = await entriesApi.post<Entry>('/entries', { description })
 
-        dispatch({ type: '[Entry] Add-Entry', payload: newEntry })
+            dispatch({ type: '[Entry] Add-Entry', payload: data })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const updateEntry = (entry: Entry) => {
