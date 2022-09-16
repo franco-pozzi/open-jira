@@ -3,19 +3,18 @@ import { GetServerSideProps } from 'next'
 
 import { Layout } from '../../components/layouts';
 
-import { isValidObjectId } from 'mongoose';
-
 import { capitalize, Card, Grid, CardHeader, CardContent, TextField, CardActions, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, IconButton } from '@mui/material';
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
-import { EntryStatus } from '../../interfaces';
+import { Entry, EntryStatus } from '../../interfaces';
+import { dbEntries } from '../../database';
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
 interface Props {
-
+    entry: Entry
 }
 
 const EntryPage: FC = (props) => {
@@ -114,9 +113,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const { id } = params as { id: string }
 
-    // if (isValidObjectId(id))
+    const entry = await dbEntries.getEntryById(id)
 
-    if (!isValidObjectId(id)) {
+    if (!entry) {
         return {
             redirect: {
                 destination: '/',
@@ -125,10 +124,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         }
     }
 
-
     return {
         props: {
-            id
+            id: entry._id
         }
     }
 }
