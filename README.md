@@ -12,6 +12,12 @@ docker-compose up -d
 mongodb://localhost:27017/entriesdb
 ```
 
+## Rebuild node modules and run app
+```
+yarn install
+yarn dev
+```
+
 ## Set ENV variables.
 
 Use __.env.example__ for template.
