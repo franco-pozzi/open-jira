@@ -17,12 +17,9 @@ interface Props {
     entry: Entry
 }
 
-const EntryPage: FC = (props) => {
-
-    console.log({ props })
-
-    const [inputValue, setInputValue] = useState('')
-    const [status, setStatus] = useState<EntryStatus>('pending')
+const EntryPage: FC<Props> = ({ entry }) => {
+    const [inputValue, setInputValue] = useState(entry.description)
+    const [status, setStatus] = useState<EntryStatus>(entry.status)
     const [touched, setTouched] = useState(false)
 
     const onFieldChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,14 +37,14 @@ const EntryPage: FC = (props) => {
     const isNotValid = useMemo(() => !inputValue.length && touched, [inputValue, touched])
 
     return (
-        <Layout title='....'>
+        <Layout title={inputValue.substring(0, 20) + '...'}>
             <Grid
                 container
                 justifyContent='center'
                 sx={{ marginTop: 2 }} >
                 <Grid item xs={12} sm={8} md={6}>
                     <Card>
-                        <CardHeader title={`Entrada: ${inputValue}`} subheader={`Creada hace ... minutos`} />
+                        <CardHeader title={`Entrada`} subheader={`Creada hace ${entry.createdAt} minutos`} />
 
                         <CardContent>
                             <TextField
@@ -126,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     return {
         props: {
-            id: entry._id
+            entry
         }
     }
 }
