@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useMemo, FC } from 'react';
+import { ChangeEvent, useState, useMemo, FC, useContext } from 'react';
 import { GetServerSideProps } from 'next'
 
 import { Layout } from '../../components/layouts';
@@ -10,6 +10,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 import { Entry, EntryStatus } from '../../interfaces';
 import { dbEntries } from '../../database';
+import { EntriesContext } from '../../context/entries';
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
@@ -18,6 +19,8 @@ interface Props {
 }
 
 const EntryPage: FC<Props> = ({ entry }) => {
+    const { updateEntry } = useContext(EntriesContext)
+
     const [inputValue, setInputValue] = useState(entry.description)
     const [status, setStatus] = useState<EntryStatus>(entry.status)
     const [touched, setTouched] = useState(false)
@@ -31,7 +34,16 @@ const EntryPage: FC<Props> = ({ entry }) => {
     }
 
     const onSave = () => {
-        console.log({ inputValue, status })
+
+        if (!inputValue.trim().length) { return null }
+
+        const updatedEntry: Entry = {
+            ...entry,
+            status,
+            description: inputValue
+        }
+
+        updateEntry(updatedEntry, true)
     }
 
     const isNotValid = useMemo(() => !inputValue.length && touched, [inputValue, touched])
