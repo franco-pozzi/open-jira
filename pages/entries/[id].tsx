@@ -11,6 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { Entry, EntryStatus } from '../../interfaces';
 import { dbEntries } from '../../database';
 import { EntriesContext } from '../../context/entries';
+import { dateFunctions } from '../../utils';
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
@@ -56,7 +57,7 @@ const EntryPage: FC<Props> = ({ entry }) => {
                 sx={{ marginTop: 2 }} >
                 <Grid item xs={12} sm={8} md={6}>
                     <Card>
-                        <CardHeader title={`Entrada`} subheader={`Creada hace ${entry.createdAt} minutos`} />
+                        <CardHeader title={`Entrada`} subheader={`Creada ${dateFunctions.getFormatDistanceToNow(entry.createdAt)}`} />
 
                         <CardContent>
                             <TextField
